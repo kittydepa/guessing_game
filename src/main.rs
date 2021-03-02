@@ -3,11 +3,11 @@ use std::cmp::Ordering; // for Less, Greater, Equal
 use rand::Rng; // We bring the Rng trait from the rand crate into this scope
 
 fn main() { // Entry point to the program
-    println!("Guess the numbers!");
+    println!("Guess the number!");
 
     let secret_number = rand::thread_rng().gen_range(1, 101);
 
-    println!("The secret number is: {}", secret_number);
+    //println!("The secret number is: {}", secret_number);
 
     loop {  // Infinite loop
         println!("Please input your guess.");
@@ -19,7 +19,10 @@ fn main() { // Entry point to the program
             .expect("Failed to read line"); // part of Result return value, will get a warning without it
     
     // 'Shadowing' or reusing the guess var with a new one. Often used when you want to convert value types    
-        let guess: u32 = guess.trim().parse().expect("Please try a number!");
+        let guess: u32 = match guess.trim().parse() { // parse returns a Result type
+            Ok(num) => num,
+            Err(_) => continue, // _, a catchall value. Match all Err value no matter what the user input is
+        };
         
         println!("You guessed: {}", guess); // One value per set of {}
 
