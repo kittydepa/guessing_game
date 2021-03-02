@@ -9,22 +9,30 @@ fn main() { // Entry point to the program
 
     println!("The secret number is: {}", secret_number);
 
-    println!("Please input your guess.");
+    loop {  // Infinite loop
+        println!("Please input your guess.");
 
-    let mut guess = String::new(); // Creating a place to store the user input, as 'guess'. let is also used to create a variable
+        let mut guess = String::new(); // Creating a place to store the user input, as 'guess'. let is also used to create a variable
                                          // String::new(), returns a new instance of String. 'new' creates an empty string
-    io::stdin()
-        .read_line(&mut guess) // read_line takes user input and places it into a string. The & is a reference...(ch4)
-        .expect("Failed to read line"); // part of Result return value, will get a warning without it
+        io::stdin()
+            .read_line(&mut guess) // read_line takes user input and places it into a string. The & is a reference...(ch4)
+            .expect("Failed to read line"); // part of Result return value, will get a warning without it
     
     // 'Shadowing' or reusing the guess var with a new one. Often used when you want to convert value types    
-    let guess: u32 = guess.trim().parse().expect("Please try a number!");
+        let guess: u32 = guess.trim().parse().expect("Please try a number!");
         
-    println!("You guessed: {}", guess); // One value per set of {}
+        println!("You guessed: {}", guess); // One value per set of {}
+
 // match is used to decide what to do based on which variant of Ordering is returned. It is made up of 'arms'
-    match guess.cmp(&secret_number) {    // cmp compares two values, in this case 'guess' and 'secret number'.
-        Ordering::Less => println!("Too small!"),
-        Ordering::Greater => println!("Too big!"),
-        Ordering::Equal => println!("You win!"),
+        match guess.cmp(&secret_number) {    // cmp compares two values, in this case 'guess' and 'secret number'.
+            Ordering::Less => println!("Too small!"),
+            Ordering::Greater => println!("Too big!"),
+            Ordering::Equal => {
+                println!("You win!");
+                break; // Exit the loop once you have guess correctly!
+            }
+        }
+
     }
+
 }
